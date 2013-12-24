@@ -10,9 +10,11 @@
   "Hello SZOP")
 
 (defmulti foo (fn [ext _] ext))
-  (defmethod foo "json"   [_ id]
+  (defmethod foo "json" [ext id]
+    (info "ext: " ext " id: " id)
     (json-response {:foo id}))
-  (defmethod foo "html"   [_ id]
+  (defmethod foo "html" [ext id]
+    (info "ext: " ext " id: " id)
     (str "<h1>" id "</h1>"))
   (defmethod foo :default [ext id]  
     (error "Unsupported extension")
@@ -21,7 +23,6 @@
 (defroutes app-routes
   (GET                "/"                []        (main_index) ) 
   (GET                "/foo/:id.:ext"    [ext id]  (foo ext id) )
-  (route/resources    "/"                                       )
   (route/not-found    "Not Found"                               ))
 
 (def app
