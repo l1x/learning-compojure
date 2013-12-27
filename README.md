@@ -1,12 +1,12 @@
 # learning-compojure
 
-FIXME
+todo:
+
+* (Async)[https://github.com/clojure/core.async/blob/master/examples/walkthrough.clj]
 
 ## Prerequisites
 
-You will need [Leiningen][1] 1.7.0 or above installed.
-
-[1]: https://github.com/technomancy/leiningen
+[0]: https://github.com/technomancy/leiningen
 
 ## Running
 
@@ -16,4 +16,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2013 FIXME
+You are not allowed to do anything.

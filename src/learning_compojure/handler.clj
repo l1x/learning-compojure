@@ -20,10 +20,16 @@
     (error "Unsupported extension")
     (str "Unsupported extension ext: " ext " id: " id))
 
+(defn lazy-fibo []
+  (map first (iterate (fn [[a b]] [b (+ a b)]) [1N 1N])))
+
+(defn get-last [n] (json-response {:fibo (last (take n (lazy-fibo)))}))
+
 (defroutes app-routes
-  (GET                "/"                []        (main_index) ) 
-  (GET                "/foo/:id.:ext"    [ext id]  (foo ext id) )
-  (route/not-found    "Not Found"                               ))
+  (GET                "/fibo/:n"        [n]       (get-last (read-string n))  )
+  (GET                "/"               []        (main_index)                ) 
+  (GET                "/foo/:id.:ext"   [ext id]  (foo ext id)                )
+  (route/not-found    "Not Found"                                             ))
 
 (def app
   (handler/site app-routes))
