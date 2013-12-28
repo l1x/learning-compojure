@@ -17,3 +17,7 @@ To start a web server for the application, run:
 ## License
 
 You are not allowed to do anything.
+
+## FlickrMap
+
+http://www.flickr.com/photos/tags/people/interesting/
