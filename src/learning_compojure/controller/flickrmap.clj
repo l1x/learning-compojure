@@ -1,6 +1,9 @@
 (ns learning-compojure.controller.flickrmap
+  (:require 
+    [clojure.data.json      :as djson         ])
   (:use
     [clojure.tools.logging  :only [info error]]
+    [ring.util.response                       ]
     [ring.util.json-response                  ]))
 
   ; http://api.flickr.com/services/rest/?method=flickr.photos.search
@@ -18,28 +21,33 @@
   ;
   ; http://www.flickr.com/services/api/explore/flickr.photos.search
 
-  ;{ "photos": { 
-  ;    "page": 1, 
-  ;    "pages": "1501", 
-  ;    "perpage": "500", 
-  ;    "total": "750130",
-  ;    "photo": [
-  ;      { "id": "11595181043", "owner": "29204155@N08", 
-  ;        "secret": "b3d61993d3", "server": "3700", 
-  ;        "farm": 4, "title": "My 2013 Last Supper at Blue Ocean", 
-  ;        "ispublic": 1, "isfriend": 0, "isfamily": 0, 
-  ;        "latitude": -8.698568, "longitude": "115.162478", "accuracy": 16, 
-  ;        "context": 0, "place_id": "87t4ILNUVLqo7QaKNw", 
-  ;        "woeid": "56013199", "geo_is_family": 0, 
-  ;        "geo_is_friend": 0, "geo_is_contact": 0, "geo_is_public": 1 
-  ;      }
-  ;    ]
-  ;  }
-  ;}
+  (def photos-raw 
+    (slurp "resources/public/sample.json"))
+
+  (def photos-json 
+    (djson/read-str photos-raw))
+
+  (def images-arr 
+    (get-in photos-json ["photos" "photo"]))
+
+  (def image-ids 
+    (map #(get-in % ["id"]) images-arr))
+
+  (defn id-lat-lon [image]
+    (let 
+     [id  (get-in image ["id"]) 
+      lat (get-in image ["latitude"]) 
+      lon (get-in image ["longitude"])]
+       {:id id :lat lat :lon lon}))
+
+  (def images-seq (map id-lat-lon images-arr))
 
   (defn flickrmap []
     (info "learning-compojure.controller.flickrmap/flickrmap")
-    (json-response {:foo "flickrmap"}))
+    (json-response images-seq))
+
+;    (-> (response photos)
+;        (content-type "application/json")))
 
 
 
