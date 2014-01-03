@@ -42,13 +42,13 @@
 
   (def images-seq (map id-lat-lon images-arr))
 
+  (def user-ns-map (ns-map 'user))
+
   (defn flickrmap []
     (info "learning-compojure.controller.flickrmap/flickrmap")
     (json-response images-seq))
 
+
 ;    (-> (response photos)
 ;        (content-type "application/json")))
-
-
-
 
